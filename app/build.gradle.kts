@@ -87,7 +87,7 @@ dependencies {
     implementation ("androidx.compose.material:material-icons-extended:1.0.0-beta01")
     implementation ("androidx.activity:activity-compose:1.8.0-alpha06")
     implementation ("com.google.accompanist:accompanist-swiperefresh:0.24.2-alpha")
-
+    implementation("androidx.navigation:navigation-compose:2.7.1")
     // Room
     implementation("androidx.room:room-common:2.5.2")
     implementation("androidx.room:room-runtime:2.5.2")

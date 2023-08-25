@@ -25,14 +25,8 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@RootNavGraph(start = true)
-@Destination(
-    route = "landing",
-    start = true
-)
 @Composable
 fun LandingView(
-    navigator: DestinationsNavigator,
     viewModel: ArticlesViewModel = hiltViewModel()
 ) {
 

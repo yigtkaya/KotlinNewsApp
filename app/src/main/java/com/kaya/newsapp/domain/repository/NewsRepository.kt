@@ -13,13 +13,16 @@ interface NewsRepository {
 
     suspend fun getSportsNews(
         fetchFromRemote: Boolean,
+        searchQuery: String,
         ) : Flow<Resource<List<Article>>>
 
     suspend fun getHealthNews(
         fetchFromRemote: Boolean,
+        searchQuery: String,
         ) : Flow<Resource<List<Article>>>
 
     suspend fun getFinanceNews(
         fetchFromRemote: Boolean,
+        searchQuery: String,
         ) : Flow<Resource<List<Article>>>
 }

@@ -10,6 +10,7 @@ import com.kaya.newsapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,6 +44,31 @@ class ArticlesViewModel @Inject constructor(
                     }
                 }
             }
+            is ArticleEvent.onSelectedTabChange -> {
+                state = state.copy(selectedTab = event.selectedTab)
+                searchJob?.cancel()
+                searchJob = viewModelScope.launch {
+                    delay(300L)
+                    when(event.selectedTab) {
+                        "Trending" -> {
+                            getNews()
+                            return@launch
+                        }
+                        "Health" -> {
+                            getHealthNews()
+                            return@launch
+                        }
+                        "Finance" -> {
+                            getFinanceNews()
+                            return@launch
+                        }
+                        "Sports" -> {
+                            getSportsNews()
+                            return@launch
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -67,5 +93,74 @@ class ArticlesViewModel @Inject constructor(
                         }
                     }
             }
+    }
+
+    private fun getHealthNews(
+        fetchFromRemote: Boolean = false,
+        searchQuery: String = state.searchQuery.lowercase()
+    ) {
+        viewModelScope.launch {
+            repository
+                .getHealthNews(fetchFromRemote, searchQuery)
+                .collect {result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            result.data?.let {
+                                state = state.copy(articles = it)
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> {
+                            state = state.copy(isLoading = result.isLoading)
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun getFinanceNews(
+        fetchFromRemote: Boolean = false,
+        searchQuery: String = state.searchQuery.lowercase()
+    ) {
+        viewModelScope.launch {
+            repository
+                .getFinanceNews(fetchFromRemote, searchQuery)
+                .collect {result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            result.data?.let {
+                                state = state.copy(articles = it)
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> {
+                            state = state.copy(isLoading = result.isLoading)
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun getSportsNews(
+        fetchFromRemote: Boolean = false,
+        searchQuery: String = state.searchQuery.lowercase()
+    ) {
+        viewModelScope.launch {
+            repository
+                .getSportsNews(fetchFromRemote, searchQuery)
+                .collect {result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            result.data?.let {
+                                state = state.copy(articles = it)
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> {
+                            state = state.copy(isLoading = result.isLoading)
+                        }
+                    }
+                }
+        }
     }
 }

@@ -7,4 +7,5 @@ data class ArticleState(
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
     val searchQuery: String = "",
+    val selectedTab: String = "Trending"
 )

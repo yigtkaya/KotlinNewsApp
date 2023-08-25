@@ -22,10 +22,7 @@ class NewsRepositoryImpl @Inject constructor(
 
     private val dao = articleDatabase.articleDao
 
-    override suspend fun getNews(
-        fetchFromRemote: Boolean,
-        searchQuery: String
-    ): Flow<Resource<List<Article>>> {
+    override suspend fun getNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
         return flow {
             emit(Resource.Loading(true))
             val localArticles = dao.searchArticles(searchQuery)
@@ -70,16 +67,139 @@ class NewsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSportsNews(fetchFromRemote: Boolean): Flow<Resource<List<Article>>> {
-        TODO("Not yet implemented")
+    override suspend fun getSportsNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val localArticles = dao.searchArticles(searchQuery)
+            emit(Resource.Success(
+                data = localArticles.map { it.toArticle() }
+            ))
+
+            val isDbEmpty = localArticles.isEmpty()
+            val shouldJustLoadFromCache = !fetchFromRemote && !isDbEmpty
+
+            if(shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteListings = try {
+                val response = newsApi.getNews()
+
+                if(response.isSuccessful) {
+                    response.body()?.articles?.map { it.toArticle() } ?: emptyList()
+                } else {
+                    emptyList()
+                }
+
+            } catch (e: IOException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            }
+
+            remoteListings.let {
+                dao.deleteAllArticles()
+                dao.insertArticles(it.map { article -> article.toArticleEntity() })
+
+                emit(Resource.Success(
+                    data = dao.searchArticles("").map { article -> article.toArticle() }
+                ))
+                emit(Resource.Loading(false))
+            }
+        }
     }
 
-    override suspend fun getHealthNews(fetchFromRemote: Boolean): Flow<Resource<List<Article>>> {
-        TODO("Not yet implemented")
+    override suspend fun getHealthNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val localArticles = dao.searchArticles(searchQuery)
+            emit(Resource.Success(
+                data = localArticles.map { it.toArticle() }
+            ))
+
+            val isDbEmpty = localArticles.isEmpty()
+            val shouldJustLoadFromCache = !fetchFromRemote && !isDbEmpty
+
+            if(shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteListings = try {
+                val response = newsApi.getNews()
+
+                if(response.isSuccessful) {
+                    response.body()?.articles?.map { it.toArticle() } ?: emptyList()
+                } else {
+                    emptyList()
+                }
+
+            } catch (e: IOException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            }
+
+            remoteListings.let {
+                dao.deleteAllArticles()
+                dao.insertArticles(it.map { article -> article.toArticleEntity() })
+
+                emit(Resource.Success(
+                    data = dao.searchArticles("").map { article -> article.toArticle() }
+                ))
+                emit(Resource.Loading(false))
+            }
+        }
     }
 
-    override suspend fun getFinanceNews(fetchFromRemote: Boolean): Flow<Resource<List<Article>>> {
-        TODO("Not yet implemented")
+    override suspend fun getFinanceNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val localArticles = dao.searchArticles(searchQuery)
+            emit(Resource.Success(
+                data = localArticles.map { it.toArticle() }
+            ))
+
+            val isDbEmpty = localArticles.isEmpty()
+            val shouldJustLoadFromCache = !fetchFromRemote && !isDbEmpty
+
+            if(shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteListings = try {
+                val response = newsApi.getNews()
+
+                if(response.isSuccessful) {
+                    response.body()?.articles?.map { it.toArticle() } ?: emptyList()
+                } else {
+                    emptyList()
+                }
+
+            } catch (e: IOException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            }
+
+            remoteListings.let {
+                dao.deleteAllArticles()
+                dao.insertArticles(it.map { article -> article.toArticleEntity() })
+
+                emit(Resource.Success(
+                    data = dao.searchArticles("").map { article -> article.toArticle() }
+                ))
+                emit(Resource.Loading(false))
+            }
+        }
     }
 
 

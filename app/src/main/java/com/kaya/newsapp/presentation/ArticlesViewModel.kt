@@ -5,18 +5,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kaya.newsapp.domain.repository.NewsRepository
+import com.kaya.newsapp.data.repository.NewsRepositoryImpl
 import com.kaya.newsapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ArticlesViewModel @Inject constructor(
-    private val repository: NewsRepository
+    private val repository: NewsRepositoryImpl
 ): ViewModel() {
 
     var state by mutableStateOf(ArticleState())
@@ -25,12 +24,28 @@ class ArticlesViewModel @Inject constructor(
 
     init {
         getNews()
+        getSportsNews()
+        getFinanceNews()
+        getHealthNews()
     }
 
     fun onEvent(event: ArticleEvent) {
         when(event) {
             is ArticleEvent.Refresh -> {
-                getNews(true)
+                when(state.selectedTab) {
+                    "Trending" -> {
+                        getNews(true)
+                    }
+                    "Health" -> {
+                        getHealthNews(true)
+                    }
+                    "Finance" -> {
+                        getFinanceNews(true)
+                    }
+                    "Sports" -> {
+                        getSportsNews(true)
+                    }
+                }
             }
             is ArticleEvent.onSearchQueryChange -> {
                 state = state.copy(searchQuery = event.searchQuery)
@@ -39,7 +54,7 @@ class ArticlesViewModel @Inject constructor(
                     val startSearch = event.searchQuery.length >= 3
                     if (startSearch) {
                         delay(500L)
-                        getNews()
+                        getAll()
                         return@launch
                     }
                 }
@@ -74,11 +89,12 @@ class ArticlesViewModel @Inject constructor(
 
     private fun getNews(
         fetchFromRemote: Boolean = false,
-        searchQuery: String = state.searchQuery.lowercase()
+        searchQuery: String = state.searchQuery.lowercase(),
+        selectedTab: String = state.selectedTab
     ) {
             viewModelScope.launch {
                 repository
-                    .getNews(fetchFromRemote, searchQuery)
+                    .getNews(fetchFromRemote, searchQuery, selectedTab)
                     .collect { result ->
                         when(result) {
                             is Resource.Success -> {
@@ -97,13 +113,14 @@ class ArticlesViewModel @Inject constructor(
 
     private fun getHealthNews(
         fetchFromRemote: Boolean = false,
-        searchQuery: String = state.searchQuery.lowercase()
+        searchQuery: String = state.searchQuery.lowercase(),
+        selectedTab: String = state.selectedTab
     ) {
         viewModelScope.launch {
             repository
-                .getHealthNews(fetchFromRemote, searchQuery)
-                .collect {result ->
-                    when (result) {
+                .getHealthNews(fetchFromRemote, searchQuery, selectedTab)
+                .collect { result ->
+                    when(result) {
                         is Resource.Success -> {
                             result.data?.let {
                                 state = state.copy(articles = it)
@@ -120,11 +137,12 @@ class ArticlesViewModel @Inject constructor(
 
     private fun getFinanceNews(
         fetchFromRemote: Boolean = false,
-        searchQuery: String = state.searchQuery.lowercase()
+        searchQuery: String = state.searchQuery.lowercase(),
+        selectedTab: String = state.selectedTab
     ) {
         viewModelScope.launch {
             repository
-                .getFinanceNews(fetchFromRemote, searchQuery)
+                .getFinanceNews(fetchFromRemote, searchQuery, selectedTab)
                 .collect {result ->
                     when (result) {
                         is Resource.Success -> {
@@ -143,12 +161,36 @@ class ArticlesViewModel @Inject constructor(
 
     private fun getSportsNews(
         fetchFromRemote: Boolean = false,
-        searchQuery: String = state.searchQuery.lowercase()
+        searchQuery: String = state.searchQuery.lowercase(),
+        selectedTab: String = state.selectedTab
     ) {
         viewModelScope.launch {
             repository
-                .getSportsNews(fetchFromRemote, searchQuery)
+                .getSportsNews(fetchFromRemote, searchQuery, selectedTab)
                 .collect {result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            result.data?.let {
+                                state = state.copy(articles = it)
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> {
+                            state = state.copy(isLoading = result.isLoading)
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun getAll(
+        fetchFromRemote: Boolean = false,
+        searchQuery: String = state.searchQuery.lowercase(),
+    ) {
+        viewModelScope.launch {
+            repository
+                .getAllNews(fetchFromRemote, searchQuery)
+                .collect { result ->
                     when (result) {
                         is Resource.Success -> {
                             result.data?.let {

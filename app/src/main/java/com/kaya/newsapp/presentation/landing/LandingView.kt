@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.kaya.newsapp.presentation.ArticleCard
 import com.kaya.newsapp.presentation.ArticleEvent
 import com.kaya.newsapp.presentation.ArticlesViewModel
+import com.kaya.newsapp.presentation.components.TabBarRow
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -33,10 +35,22 @@ fun LandingView(
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = viewModel.state.isRefreshing)
     val state = viewModel.state
 
+    val topList = listOf(
+        "Trending",
+        "Health",
+        "Sports",
+        "Finance"
+    )
     Column (
         modifier = Modifier
             .fillMaxSize()
     ){
+        TabBarRow(items = topList,
+            selectedTab = viewModel.state.selectedTab,
+            onSelectedIndexChange = {selectedTab ->
+                viewModel.onEvent(ArticleEvent.onSelectedTabChange(selectedTab))
+            }
+        )
         OutlinedTextField(value = state.searchQuery,
             onValueChange =  {
                 viewModel.onEvent(ArticleEvent.onSearchQueryChange(it))

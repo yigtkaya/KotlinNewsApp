@@ -22,12 +22,16 @@ class NewsRepositoryImpl @Inject constructor(
 
     private val dao = articleDatabase.articleDao
 
-    override suspend fun getNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
+    override suspend fun getNews(
+        fetchFromRemote: Boolean,
+        searchQuery: String,
+        selectedTab: String
+    ): Flow<Resource<List<Article>>> {
         return flow {
             emit(Resource.Loading(true))
-            val localArticles = dao.searchArticles(searchQuery)
+            val localArticles = dao.searchArticles(searchQuery, selectedTab)
             emit(Resource.Success(
-                data = localArticles.map { it.toArticle() }
+                data = localArticles.map { it.toArticle(selectedTab) }
             ))
 
             val isDbEmpty = localArticles.isEmpty()
@@ -42,7 +46,7 @@ class NewsRepositoryImpl @Inject constructor(
                 val response = newsApi.getNews()
 
                 if(response.isSuccessful) {
-                    response.body()?.articles?.map { it.toArticle() } ?: emptyList()
+                    response.body()?.articles?.map { it.toArticle(selectedTab) } ?: emptyList()
                 } else {
                     emptyList()
                 }
@@ -56,23 +60,159 @@ class NewsRepositoryImpl @Inject constructor(
             }
 
             remoteListings.let {
-                dao.deleteAllArticles()
-                dao.insertArticles(it.map { article -> article.toArticleEntity() })
+                dao.deleteArticlesByType(selectedTab)
+                dao.insertArticles(it.map { article -> article.toArticleEntity(selectedTab) })
 
                 emit(Resource.Success(
-                    data = dao.searchArticles("").map { article -> article.toArticle() }
+                    data = dao.searchArticles("", selectedTab).map { article -> article.toArticle(selectedTab) }
                 ))
                 emit(Resource.Loading(false))
             }
         }
     }
 
-    override suspend fun getSportsNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
+    override suspend fun getSportsNews(fetchFromRemote: Boolean, searchQuery: String, selectedTab: String
+    ): Flow<Resource<List<Article>>> {
         return flow {
             emit(Resource.Loading(true))
-            val localArticles = dao.searchArticles(searchQuery)
+            val localArticles = dao.searchArticles(searchQuery, selectedTab)
             emit(Resource.Success(
-                data = localArticles.map { it.toArticle() }
+                data = localArticles.map { it.toArticle(selectedTab) }
+            ))
+
+            val isDbEmpty = localArticles.isEmpty()
+            val shouldJustLoadFromCache = !fetchFromRemote && !isDbEmpty
+
+            if(shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteListings = try {
+                val response = newsApi.getSportsNews()
+
+                if(response.isSuccessful) {
+                    response.body()?.articles?.map { it.toArticle(selectedTab) } ?: emptyList()
+                } else {
+                    emptyList()
+                }
+
+            } catch (e: IOException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            }
+
+            remoteListings.let {
+                dao.deleteArticlesByType(selectedTab)
+                dao.insertArticles(it.map { article -> article.toArticleEntity(selectedTab) })
+
+                emit(Resource.Success(
+                    data = dao.searchArticles("", selectedTab).map { article -> article.toArticle(selectedTab) }
+                ))
+                emit(Resource.Loading(false))
+            }
+        }
+    }
+
+    override suspend fun getHealthNews(fetchFromRemote: Boolean, searchQuery: String, selectedTab: String): Flow<Resource<List<Article>>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val localArticles = dao.searchArticles(searchQuery, selectedTab)
+            emit(Resource.Success(
+                data = localArticles.map { it.toArticle(selectedTab) }
+            ))
+
+            val isDbEmpty = localArticles.isEmpty()
+            val shouldJustLoadFromCache = !fetchFromRemote && !isDbEmpty
+
+            if(shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteListings = try {
+                val response = newsApi.getHealthNews()
+
+                if(response.isSuccessful) {
+                    response.body()?.articles?.map { it.toArticle(selectedTab) } ?: emptyList()
+                } else {
+                    emptyList()
+                }
+
+            } catch (e: IOException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            }
+
+            remoteListings.let {
+                dao.deleteArticlesByType(selectedTab)
+                dao.insertArticles(it.map { article -> article.toArticleEntity(selectedTab) })
+
+                emit(Resource.Success(
+                    data = dao.searchArticles("", selectedTab).map { article -> article.toArticle(selectedTab) }
+                ))
+                emit(Resource.Loading(false))
+            }
+        }
+    }
+
+    override suspend fun getFinanceNews(fetchFromRemote: Boolean, searchQuery: String, selectedTab: String): Flow<Resource<List<Article>>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val localArticles = dao.searchArticles(searchQuery, selectedTab)
+            emit(Resource.Success(
+                data = localArticles.map { it.toArticle(selectedTab) }
+            ))
+
+            val isDbEmpty = localArticles.isEmpty()
+            val shouldJustLoadFromCache = !fetchFromRemote && !isDbEmpty
+
+            if(shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteListings = try {
+                val response = newsApi.getFinanceNews()
+
+                if(response.isSuccessful) {
+                    response.body()?.articles?.map { it.toArticle(selectedTab) } ?: emptyList()
+                } else {
+                    emptyList()
+                }
+
+            } catch (e: IOException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message.toString()))
+                return@flow
+            }
+
+            remoteListings.let {
+                dao.deleteArticlesByType(selectedTab)
+                dao.insertArticles(it.map { article -> article.toArticleEntity(selectedTab) })
+
+                emit(Resource.Success(
+                    data = dao.searchArticles("", selectedTab).map { article -> article.toArticle(selectedTab) }
+                ))
+                emit(Resource.Loading(false))
+            }
+        }
+    }
+
+    override suspend fun getAllNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
+        return flow {
+            emit(Resource.Loading(true))
+            val localArticles = dao.searchAllArticles(searchQuery)
+            emit(Resource.Success(
+                data = localArticles.map { it.toArticle(null) }
             ))
 
             val isDbEmpty = localArticles.isEmpty()
@@ -87,7 +227,7 @@ class NewsRepositoryImpl @Inject constructor(
                 val response = newsApi.getNews()
 
                 if(response.isSuccessful) {
-                    response.body()?.articles?.map { it.toArticle() } ?: emptyList()
+                    response.body()?.articles?.map { it.toArticle(null) } ?: emptyList()
                 } else {
                     emptyList()
                 }
@@ -102,105 +242,13 @@ class NewsRepositoryImpl @Inject constructor(
 
             remoteListings.let {
                 dao.deleteAllArticles()
-                dao.insertArticles(it.map { article -> article.toArticleEntity() })
+                dao.insertArticles(it.map { article -> article.toArticleEntity(null) })
 
                 emit(Resource.Success(
-                    data = dao.searchArticles("").map { article -> article.toArticle() }
+                    data = dao.searchAllArticles("").map { article -> article.toArticle(null) }
                 ))
                 emit(Resource.Loading(false))
             }
         }
     }
-
-    override suspend fun getHealthNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
-        return flow {
-            emit(Resource.Loading(true))
-            val localArticles = dao.searchArticles(searchQuery)
-            emit(Resource.Success(
-                data = localArticles.map { it.toArticle() }
-            ))
-
-            val isDbEmpty = localArticles.isEmpty()
-            val shouldJustLoadFromCache = !fetchFromRemote && !isDbEmpty
-
-            if(shouldJustLoadFromCache) {
-                emit(Resource.Loading(false))
-                return@flow
-            }
-
-            val remoteListings = try {
-                val response = newsApi.getNews()
-
-                if(response.isSuccessful) {
-                    response.body()?.articles?.map { it.toArticle() } ?: emptyList()
-                } else {
-                    emptyList()
-                }
-
-            } catch (e: IOException) {
-                emit(Resource.Error(e.message.toString()))
-                return@flow
-            } catch (e: HttpException) {
-                emit(Resource.Error(e.message.toString()))
-                return@flow
-            }
-
-            remoteListings.let {
-                dao.deleteAllArticles()
-                dao.insertArticles(it.map { article -> article.toArticleEntity() })
-
-                emit(Resource.Success(
-                    data = dao.searchArticles("").map { article -> article.toArticle() }
-                ))
-                emit(Resource.Loading(false))
-            }
-        }
-    }
-
-    override suspend fun getFinanceNews(fetchFromRemote: Boolean, searchQuery: String): Flow<Resource<List<Article>>> {
-        return flow {
-            emit(Resource.Loading(true))
-            val localArticles = dao.searchArticles(searchQuery)
-            emit(Resource.Success(
-                data = localArticles.map { it.toArticle() }
-            ))
-
-            val isDbEmpty = localArticles.isEmpty()
-            val shouldJustLoadFromCache = !fetchFromRemote && !isDbEmpty
-
-            if(shouldJustLoadFromCache) {
-                emit(Resource.Loading(false))
-                return@flow
-            }
-
-            val remoteListings = try {
-                val response = newsApi.getNews()
-
-                if(response.isSuccessful) {
-                    response.body()?.articles?.map { it.toArticle() } ?: emptyList()
-                } else {
-                    emptyList()
-                }
-
-            } catch (e: IOException) {
-                emit(Resource.Error(e.message.toString()))
-                return@flow
-            } catch (e: HttpException) {
-                emit(Resource.Error(e.message.toString()))
-                return@flow
-            }
-
-            remoteListings.let {
-                dao.deleteAllArticles()
-                dao.insertArticles(it.map { article -> article.toArticleEntity() })
-
-                emit(Resource.Success(
-                    data = dao.searchArticles("").map { article -> article.toArticle() }
-                ))
-                emit(Resource.Loading(false))
-            }
-        }
-    }
-
-
 }

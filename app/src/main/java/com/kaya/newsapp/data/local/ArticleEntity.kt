@@ -6,6 +6,7 @@ import com.kaya.newsapp.domain.models.Source
 
 @Entity
 data class ArticleEntity(
+    val type: String,
     val title: String?,
     val author: String?,
     val description: String?,

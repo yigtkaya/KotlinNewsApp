@@ -13,12 +13,24 @@ interface ArticleDao {
 
     @Query("DELETE FROM ArticleEntity")
     suspend fun deleteAllArticles()
+    @Query("DELETE  FROM ArticleEntity WHERE type = :selectedTab")
+    suspend fun deleteArticlesByType(selectedTab : String)
 
     @Query("""
         SELECT * FROM ArticleEntity
-        WHERE title LIKE '%' || :searchQuery || '%'
-        OR description LIKE '%' || :searchQuery || '%'
+        WHERE type = :selectedTab
+        AND (title LIKE '%' || :searchQuery || '%' OR description LIKE '%' || :searchQuery || '%')
     """)
-    suspend fun searchArticles(searchQuery : String) : List<ArticleEntity>
+    suspend fun searchArticles(searchQuery : String, selectedTab: String) : List<ArticleEntity>
+
+
+    // write a query that returns all articles from the database that have query in their title or description type is not important
+    @Query("""
+        SELECT * FROM ArticleEntity
+        WHERE title LIKE '%' || :searchQuery || '%' OR description LIKE '%' || :searchQuery || '%'
+    """)
+    suspend fun searchAllArticles(searchQuery : String) : List<ArticleEntity>
+
+
 
 }

@@ -37,7 +37,7 @@ fun CustomBottomNavBar(
     Row (
         modifier = Modifier
             .clip(CircleShape)
-        .background(color = Color.Black)
+        .background(color = Color.Transparent)
             .shadow(elevation = 16.dp, shape = CircleShape),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.SpaceEvenly,

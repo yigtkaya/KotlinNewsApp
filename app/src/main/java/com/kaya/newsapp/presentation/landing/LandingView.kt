@@ -1,7 +1,9 @@
 package com.kaya.newsapp.presentation.landing
 
+import android.content.res.Resources.Theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +22,10 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.kaya.newsapp.presentation.components.ArticleCard
 import com.kaya.newsapp.presentation.components.TabBarRow
 import com.kaya.newsapp.presentation.search.SearchEvent
+import com.kaya.newsapp.presentation.theme.paleBlue
+import com.kaya.newsapp.presentation.theme.paleGreen
+import com.kaya.newsapp.presentation.theme.paleRed
+import com.kaya.newsapp.presentation.theme.paleYellow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,9 +42,16 @@ fun LandingView(
         "Sports",
         "Finance"
     )
+    val colors = listOf(
+        paleRed,
+        paleGreen,
+        paleYellow,
+        paleBlue
+    )
+
     Column (
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize().background(Color.Black)
     ){
         TabBarRow(items = topList,
             selectedTab = viewModel.state.selectedTab,
@@ -46,19 +59,20 @@ fun LandingView(
                 viewModel.onEvent(ArticleEvent.onSelectedTabChange(selectedTab))
             }
         )
-        SwipeRefresh(state = swipeRefreshState, onRefresh = {
+        SwipeRefresh(
+            modifier = Modifier.padding(16.dp),
+            state = swipeRefreshState, onRefresh = {
             viewModel.onEvent(ArticleEvent.Refresh)
         }) {
-            LazyColumn(modifier = Modifier.fillMaxSize(),content = {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxSize(),content = {
                 items(state.articles.size) { index ->
                     val article = state.articles[index]
+                    val randomColor = colors.random()
                     ArticleCard(
                         article = article,
-                        backgroundColor = if (index % 2 == 0) {
-                            Color(0xFFEEBEBE)
-                        } else {
-                            Color(0xFF360505)
-                        },
+                        backgroundColor = randomColor,
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth()

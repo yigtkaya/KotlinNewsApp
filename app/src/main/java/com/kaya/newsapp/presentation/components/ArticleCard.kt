@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -30,45 +33,46 @@ fun ArticleCard(
 ) {
 
         Box(modifier = Modifier
+            .clip(RoundedCornerShape(24.dp))
             .background(color = backgroundColor)
-            .clip(shape = RoundedCornerShape(16.dp))) {
+            .fillMaxSize()
+            .padding(vertical = 16.dp)) {
 
-            Column {
+            Column (
+                modifier = Modifier
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center
+            ){
                 Text(
-                    text = article.title ?: "Unknown",
+                    text = article.title ?: "Unknown Title",
                     fontWeight = FontWeight.Bold,
                     fontSize = 32.sp,
+                    softWrap = true,
+                    maxLines = 3,
+                    lineHeight = 40.sp,
                     overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(start = 12.dp, end = 20.dp),
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                Row (
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth(),
-                ){
-                    Text(
-                        text = article.author ?: "Unknown",
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 14.sp,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    Button(
-                        modifier = Modifier
-                            .clip(shape = RoundedCornerShape(30.dp))
-                            .background(Color.Black),
-                        onClick = {
-                            // show toast message that this function is not working right now
-
-                        }) {
-                        Text(text = "Follow", textAlign = TextAlign.Center, color = Color.White, fontSize = 14.sp)
-                    }
-                }
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = article.description ?: "Unknown",
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 16.sp,
+                    text = article.author ?: "Unknown Author",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    softWrap = true,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(start = 12.dp, end = 20.dp),
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = article.description ?: "Unknown Description",
+                    fontWeight = FontWeight.W600,
+                    fontSize = 14.sp,
+                    softWrap = true,
+                    maxLines = 6,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(start = 12.dp, end = 20.dp),
+                    )
             }
         }
 }

@@ -60,7 +60,7 @@ fun LandingView(
             }
         )
         SwipeRefresh(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             state = swipeRefreshState, onRefresh = {
             viewModel.onEvent(ArticleEvent.Refresh)
         }) {

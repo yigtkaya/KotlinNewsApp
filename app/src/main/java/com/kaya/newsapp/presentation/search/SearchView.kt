@@ -65,7 +65,7 @@ fun SearchView (
         )
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxSize().padding(16.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
             content = {
             items(state.articles.size) { index ->
                 val article = state.articles[index]

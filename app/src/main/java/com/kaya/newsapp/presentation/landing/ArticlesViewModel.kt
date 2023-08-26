@@ -47,23 +47,6 @@ class ArticlesViewModel @Inject constructor(
                     }
                 }
             }
-            is ArticleEvent.onSearchQueryChange -> {
-                state = state.copy(searchQuery = event.searchQuery)
-                searchJob?.cancel()
-                searchJob = viewModelScope.launch {
-                    val startSearch = event.searchQuery.length >= 3
-                    if (startSearch) {
-                        delay(500L)
-                        getAll()
-                        return@launch
-                    } else if (event.searchQuery.isNotEmpty()) {
-                        getNews()
-                        return@launch
-                    } else {
-                        getAll()
-                    }
-                }
-            }
             is ArticleEvent.onSelectedTabChange -> {
                 state = state.copy(selectedTab = event.selectedTab)
                 searchJob?.cancel()
@@ -173,29 +156,6 @@ class ArticlesViewModel @Inject constructor(
             repository
                 .getSportsNews(fetchFromRemote, searchQuery, selectedTab)
                 .collect {result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            result.data?.let {
-                                state = state.copy(articles = it)
-                            }
-                        }
-                        is Resource.Error -> Unit
-                        is Resource.Loading -> {
-                            state = state.copy(isLoading = result.isLoading)
-                        }
-                    }
-                }
-        }
-    }
-
-    private fun getAll(
-        fetchFromRemote: Boolean = false,
-        searchQuery: String = state.searchQuery.lowercase(),
-    ) {
-        viewModelScope.launch {
-            repository
-                .getAllNews(fetchFromRemote, searchQuery)
-                .collect { result ->
                     when (result) {
                         is Resource.Success -> {
                             result.data?.let {

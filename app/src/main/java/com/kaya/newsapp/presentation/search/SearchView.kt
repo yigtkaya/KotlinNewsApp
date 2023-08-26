@@ -3,6 +3,7 @@ package com.kaya.newsapp.presentation.search
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,17 +26,19 @@ import com.kaya.newsapp.presentation.landing.ArticlesViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView (
-    viewModel: ArticlesViewModel = hiltViewModel()
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = viewModel.state.isRefreshing)
 
-
-    Box(modifier = Modifier.fillMaxSize().background(color = Color.Black)) {
-        OutlinedTextField(value = state.searchQuery,
+    Column (
+        modifier = Modifier
+            .fillMaxSize().background(Color.Black)
+    ){
+        OutlinedTextField(
+            value = state.searchQuery,
             onValueChange =  {
-                viewModel.onEvent(ArticleEvent.onSearchQueryChange(it))
+                viewModel.onEvent(SearchEvent.onSearchQueryChange(it))
             },
             modifier = Modifier
                 .padding(16.dp)
@@ -46,28 +49,24 @@ fun SearchView (
             maxLines = 1,
             singleLine = true,
         )
-        SwipeRefresh(state = swipeRefreshState, onRefresh = {
-            viewModel.onEvent(ArticleEvent.Refresh)
-        }) {
-            LazyColumn(modifier = Modifier.fillMaxSize(),content = {
-                items(state.articles.size) { index ->
-                    val article = state.articles[index]
-                    ArticleCard(
-                        article = article,
-                        backgroundColor = if (index % 2 == 0) {
-                            Color(0xFFEEBEBE)
-                        } else {
-                            Color(0xFF360505)
-                        },
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                // Navigate to the details screen
-                            }
-                    )
-                }
-            })
-        }
+        LazyColumn(modifier = Modifier.fillMaxSize(),content = {
+            items(state.articles.size) { index ->
+                val article = state.articles[index]
+                ArticleCard(
+                    article = article,
+                    backgroundColor = if (index % 2 == 0) {
+                        Color(0xFFEEBEBE)
+                    } else {
+                        Color(0xFF360505)
+                    },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            // Navigate to the details screen
+                        }
+                )
+            }
+        })
     }
 }

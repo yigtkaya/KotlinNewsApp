@@ -3,6 +3,7 @@
 package com.kaya.newsapp.presentation
 
 import android.os.Bundle
+import android.widget.Toolbar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
 import com.kaya.newsapp.presentation.landing.ArticlesViewModel
 import com.kaya.newsapp.presentation.bottomNavBar.CustomBottomNavBar
+import com.kaya.newsapp.presentation.components.ToolBar
 import com.kaya.newsapp.presentation.navigation.BottomNavigationHost
 import com.kaya.newsapp.presentation.navigation.Screens
 import com.kaya.newsapp.presentation.theme.NewsAppTheme
@@ -29,6 +31,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             val bottomList = listOf(
                 Screens.Landing,
@@ -42,6 +45,7 @@ class MainActivity : ComponentActivity() {
                         bottomBar = {
                             CustomBottomNavBar(items = bottomList, navController = navController)
                         },
+                        topBar = { ToolBar() },
                         content = {
                             Box(modifier = Modifier.padding(it)) {
                                 BottomNavigationHost(navHostController = navController)

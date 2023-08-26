@@ -1,11 +1,9 @@
-package com.kaya.newsapp.presentation
+package com.kaya.newsapp.presentation.search
 
 import com.kaya.newsapp.domain.models.Article
 
-data class ArticleState(
+data class SearchState(
     val articles: List<Article> = emptyList(),
     val isLoading: Boolean = false,
-    val isRefreshing: Boolean = false,
     val searchQuery: String = "",
-    val selectedTab: String = "Trending"
 )

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.kaya.newsapp
+package com.kaya.newsapp.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,19 +15,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
-import com.kaya.newsapp.presentation.ArticleEvent
-import com.kaya.newsapp.presentation.ArticlesViewModel
+import com.kaya.newsapp.presentation.landing.ArticlesViewModel
 import com.kaya.newsapp.presentation.bottomNavBar.CustomBottomNavBar
-import com.kaya.newsapp.presentation.components.TabBarRow
 import com.kaya.newsapp.presentation.navigation.BottomNavigationHost
 import com.kaya.newsapp.presentation.navigation.Screens
-import com.kaya.newsapp.ui.theme.NewsAppTheme
+import com.kaya.newsapp.presentation.theme.NewsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: ArticlesViewModel by viewModels()
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

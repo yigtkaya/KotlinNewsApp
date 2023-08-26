@@ -223,26 +223,7 @@ class NewsRepositoryImpl @Inject constructor(
                 return@flow
             }
 
-            val remoteListings = try {
-                val response = newsApi.getNews()
-
-                if(response.isSuccessful) {
-                    response.body()?.articles?.map { it.toArticle(null) } ?: emptyList()
-                } else {
-                    emptyList()
-                }
-
-            } catch (e: IOException) {
-                emit(Resource.Error(e.message.toString()))
-                return@flow
-            } catch (e: HttpException) {
-                emit(Resource.Error(e.message.toString()))
-                return@flow
-            }
-
-            remoteListings.let {
-                dao.deleteAllArticles()
-                dao.insertArticles(it.map { article -> article.toArticleEntity(null) })
+            localArticles.let {
 
                 emit(Resource.Success(
                     data = dao.searchAllArticles("").map { article -> article.toArticle(null) }

@@ -1,4 +1,4 @@
-package com.kaya.newsapp.presentation
+package com.kaya.newsapp.presentation.landing
 
 sealed class ArticleEvent {
     object Refresh: ArticleEvent()

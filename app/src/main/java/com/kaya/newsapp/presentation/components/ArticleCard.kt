@@ -1,4 +1,4 @@
-package com.kaya.newsapp.presentation
+package com.kaya.newsapp.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package com.kaya.newsapp.presentation
+package com.kaya.newsapp.presentation.landing
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,6 +56,11 @@ class ArticlesViewModel @Inject constructor(
                         delay(500L)
                         getAll()
                         return@launch
+                    } else if (event.searchQuery.isNotEmpty()) {
+                        getNews()
+                        return@launch
+                    } else {
+                        getAll()
                     }
                 }
             }

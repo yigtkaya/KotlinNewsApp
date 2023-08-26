@@ -1,4 +1,4 @@
-package com.kaya.newsapp.ui.theme
+package com.kaya.newsapp.presentation.theme
 
 import android.app.Activity
 import android.os.Build
@@ -37,7 +37,9 @@ fun NewsAppTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         darkTheme -> DarkColorScheme
-        else -> {DarkColorScheme}
+        else -> {
+            DarkColorScheme
+        }
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

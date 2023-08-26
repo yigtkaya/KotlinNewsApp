@@ -5,14 +5,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,17 +48,24 @@ fun SearchView (
     )
     Column (
         modifier = Modifier
-            .fillMaxSize().background(Color.Black)
+            .fillMaxSize()
+            .background(Color.Black)
     ){
         OutlinedTextField(
-
             value = state.searchQuery,
             onValueChange =  {
                 viewModel.onEvent(SearchEvent.onSearchQueryChange(it))
             },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.White,
+                cursorColor = Color.Gray,
+                focusedBorderColor = Color.White,
+                unfocusedBorderColor = Color.White,
+                disabledBorderColor = Color.White,
+            ),
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier
-                .clip(shape = RoundedCornerShape(16.dp))
-                .padding(16.dp)
+                .padding(horizontal = 16.dp, vertical = 10.dp)
                 .fillMaxWidth(),
             placeholder = {
                 Text(text = "Search", color = Color.White)
@@ -65,14 +75,16 @@ fun SearchView (
         )
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
             content = {
-            items(state.articles.size) { index ->
-                val article = state.articles[index]
                 val randomColor = colors.random()
+                items(state.articles.size) { index ->
+                val article = state.articles[index]
                 ArticleCard(
                     article = article,
-                    backgroundColor = randomColor,
+                    backgroundColor = colors[index % state.articles.size],
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth()

@@ -114,4 +114,7 @@ dependencies {
 
     //gson
     implementation("com.google.code.gson:gson:2.9.0")
+
+    // Glide
+    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.5")
 }

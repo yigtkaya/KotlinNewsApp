@@ -32,28 +32,19 @@ fun ArticleDetailView(
     onClick: () -> Unit
 ) {
 
-    val color = listOf(
-        paleBlue,
-        paleYellow,
-        paleGreen,
-        paleRed
-    ).random()
+    val backgroundColor = viewModel.color
 
-    Scaffold (
-
-    ){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
-                .background(color)
+                .background(backgroundColor)
         ) {
 
             IconButton(
                 modifier = Modifier
-                    .padding(4.dp)
-                    .background(Color.LightGray)
-                    .clip(CircleShape),
+                    .padding(2.dp)
+                    .clip(CircleShape)
+                    .background(Color.LightGray),
                 onClick = {
                     onClick()
                 }) {
@@ -64,6 +55,4 @@ fun ArticleDetailView(
                 )
             }
         }
-    }
-
 }

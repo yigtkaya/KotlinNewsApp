@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -12,18 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.google.gson.Gson
 import com.kaya.newsapp.presentation.components.ArticleCard
 import com.kaya.newsapp.presentation.components.TabBarRow
 import com.kaya.newsapp.presentation.navigation.DetailScreens
-import com.kaya.newsapp.presentation.theme.paleBlue
-import com.kaya.newsapp.presentation.theme.paleGreen
-import com.kaya.newsapp.presentation.theme.paleRed
-import com.kaya.newsapp.presentation.theme.paleYellow
+
 
 @Composable
 fun LandingView(

@@ -2,11 +2,11 @@ package com.kaya.newsapp.presentation.ArticleDetail
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -67,10 +66,10 @@ fun ArticleDetailView(
 
         Column(
             modifier = Modifier
+                .fillMaxHeight()
                 .verticalScroll(rememberScrollState())
                 .background(backgroundColor)
                 .padding(start = 12.dp, end = 20.dp)
-                .fillMaxSize()
         ) {
             Spacer(modifier = Modifier.height(12.dp))
             IconButton(

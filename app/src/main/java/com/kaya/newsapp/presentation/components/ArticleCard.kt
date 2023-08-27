@@ -1,6 +1,7 @@
 package com.kaya.newsapp.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,14 +30,18 @@ import com.kaya.newsapp.domain.models.Article
 fun ArticleCard(
     article: Article,
     backgroundColor: Color,
-    modifier : Modifier = Modifier,
+    onClick: () -> Unit
 ) {
 
         Box(modifier = Modifier
             .clip(RoundedCornerShape(24.dp))
             .background(color = backgroundColor)
             .fillMaxSize()
-            .padding(vertical = 16.dp)) {
+            .padding(vertical = 16.dp)
+            .clickable {
+                onClick()
+            }
+        ) {
 
             Column (
                 modifier = Modifier

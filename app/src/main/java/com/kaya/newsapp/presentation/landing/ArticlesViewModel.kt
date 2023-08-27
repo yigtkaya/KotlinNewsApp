@@ -72,6 +72,10 @@ class ArticlesViewModel @Inject constructor(
                     }
                 }
             }
+            is ArticleEvent.onClick -> {
+                // navigate to detail screen with article parameter
+
+            }
         }
     }
 

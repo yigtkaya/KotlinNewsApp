@@ -22,8 +22,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.gson.Gson
 import com.kaya.newsapp.presentation.landing.ArticleEvent
 import com.kaya.newsapp.presentation.components.ArticleCard
 import com.kaya.newsapp.presentation.landing.ArticlesViewModel
@@ -36,6 +38,7 @@ import com.kaya.newsapp.presentation.theme.paleYellow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView (
+    onNavigateToDetail: (String) -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
 
@@ -85,13 +88,10 @@ fun SearchView (
                 ArticleCard(
                     article = article,
                     backgroundColor = colors[index % state.articles.size],
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .clickable {
-                            // Navigate to the details screen
-
-                        }
+                    onClick = {
+                        val articleString = Gson().toJson(article)
+                        onNavigateToDetail(articleString)
+                    }
                 )
             }
         })

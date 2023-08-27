@@ -14,11 +14,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.gson.Gson
 import com.kaya.newsapp.presentation.components.ArticleCard
 import com.kaya.newsapp.presentation.components.TabBarRow
+import com.kaya.newsapp.presentation.navigation.DetailScreens
 import com.kaya.newsapp.presentation.theme.paleBlue
 import com.kaya.newsapp.presentation.theme.paleGreen
 import com.kaya.newsapp.presentation.theme.paleRed
@@ -27,6 +29,7 @@ import com.kaya.newsapp.presentation.theme.paleYellow
 @Composable
 fun LandingView(
     onNavigateToDetail: () -> Unit,
+    navController: NavHostController,
     viewModel: ArticlesViewModel = hiltViewModel(),
 ) {
 
@@ -63,7 +66,10 @@ fun LandingView(
                     ArticleCard(
                         article = article,
                            onClick = {
-                               onNavigateToDetail()
+                               navController.currentBackStackEntry?.savedStateHandle?.set(
+                                   key = "article",
+                                   value = article)
+                               navController.navigate(DetailScreens.ArticleDetail.route)
                            }
                     )
                 }

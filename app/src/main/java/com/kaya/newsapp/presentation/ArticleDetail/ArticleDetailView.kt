@@ -9,19 +9,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kaya.newsapp.domain.models.Article
 
 @Composable
 fun ArticleDetailView(
     viewModel: ArticleDetailViewModel = hiltViewModel(),
+    article: Article?,
     onClick: () -> Unit
 ) {
 
+    val title = article?.title ?: ""
     val backgroundColor = viewModel.color
 
         Column(
@@ -44,5 +48,7 @@ fun ArticleDetailView(
                     tint = Color.Black
                 )
             }
+
+            Text(text = title)
         }
 }

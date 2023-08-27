@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.kaya.newsapp.domain.models.Article
 import com.kaya.newsapp.presentation.ArticleDetail.ArticleDetailView
 import com.kaya.newsapp.presentation.landing.LandingView
 import com.kaya.newsapp.presentation.search.SearchView
@@ -42,6 +43,7 @@ fun BottomNavigationHost(
 
         composable(Screens.Landing.route) {
             LandingView(
+                navController = navHostController,
                 onNavigateToDetail = {
                     navHostController.navigate(Graph.DETAIL) {
 
@@ -49,12 +51,21 @@ fun BottomNavigationHost(
                 },)
         }
         composable(Screens.Search.route) {
-            SearchView(onNavigateToDetail = {
+            SearchView(
+                navController = navHostController,
+                onNavigateToDetail = {
                 navHostController.navigate(Graph.DETAIL)
             },)
         }
-        detailsNavGraph(navHostController)
-    })
+        composable(DetailScreens.ArticleDetail.route) {
+            val result = navHostController.previousBackStackEntry?.savedStateHandle?.get<Article>("article")
+            ArticleDetailView(
+                article = result,
+            ) {
+                navHostController.popBackStack()
+            }
+        }
+        })
 }
 
 fun NavGraphBuilder.detailsNavGraph(navController: NavController) {
@@ -62,13 +73,6 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavController) {
             route = Graph.DETAIL,
             startDestination = DetailScreens.ArticleDetail.route
         ) {
-            composable(DetailScreens.ArticleDetail.route) {
-                ArticleDetailView(
-                    onClick = {
-                        navController.popBackStack()
-                    },
-                )
-            }
         }
 }
 

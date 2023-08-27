@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.gson.Gson
@@ -38,6 +39,7 @@ import com.kaya.newsapp.presentation.theme.paleYellow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView (
+    navController : NavHostController,
     onNavigateToDetail: () -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ) {

@@ -42,20 +42,10 @@ fun BottomNavigationHost(
         builder = {
 
         composable(Screens.Landing.route) {
-            LandingView(
-                navController = navHostController,
-                onNavigateToDetail = {
-                    navHostController.navigate(Graph.DETAIL) {
-
-                    }
-                },)
+            LandingView(navController = navHostController,)
         }
         composable(Screens.Search.route) {
-            SearchView(
-                navController = navHostController,
-                onNavigateToDetail = {
-                navHostController.navigate(Graph.DETAIL)
-            },)
+            SearchView(navController = navHostController,)
         }
         composable(DetailScreens.ArticleDetail.route) {
             val result = navHostController.previousBackStackEntry?.savedStateHandle?.get<Article>("article")

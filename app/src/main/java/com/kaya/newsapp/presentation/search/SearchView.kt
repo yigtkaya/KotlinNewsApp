@@ -30,6 +30,7 @@ import com.google.gson.Gson
 import com.kaya.newsapp.presentation.landing.ArticleEvent
 import com.kaya.newsapp.presentation.components.ArticleCard
 import com.kaya.newsapp.presentation.landing.ArticlesViewModel
+import com.kaya.newsapp.presentation.navigation.DetailScreens
 import com.kaya.newsapp.presentation.theme.paleBlue
 import com.kaya.newsapp.presentation.theme.paleGreen
 import com.kaya.newsapp.presentation.theme.paleRed
@@ -40,7 +41,6 @@ import com.kaya.newsapp.presentation.theme.paleYellow
 @Composable
 fun SearchView (
     navController : NavHostController,
-    onNavigateToDetail: () -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
 
@@ -84,8 +84,10 @@ fun SearchView (
                 ArticleCard(
                     article = article,
                     onClick = {
-                        viewModel.onEvent(SearchEvent.onClick(article))
-                        onNavigateToDetail()
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            key = "article",
+                            value = article)
+                        navController.navigate(DetailScreens.ArticleDetail.route)
                     }
                 )
             }

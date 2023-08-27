@@ -2,7 +2,6 @@ package com.kaya.newsapp.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kaya.newsapp.domain.models.Source
 
 @Entity
 data class ArticleEntity(

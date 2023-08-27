@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.kaya.newsapp.data.repository.NewsRepositoryImpl
 import com.kaya.newsapp.presentation.bottomNavBar.BottomBarState
 import com.kaya.newsapp.presentation.theme.paleBlue
-import com.kaya.newsapp.presentation.theme.paleGrween
+import com.kaya.newsapp.presentation.theme.paleGreen
 import com.kaya.newsapp.presentation.theme.paleRed
 import com.kaya.newsapp.presentation.theme.paleYellow
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,7 +1,6 @@
 package com.kaya.newsapp.presentation.landing
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +27,6 @@ import com.kaya.newsapp.presentation.theme.paleYellow
 
 @Composable
 fun LandingView(
-    onNavigateToDetail: () -> Unit,
     navController: NavHostController,
     viewModel: ArticlesViewModel = hiltViewModel(),
 ) {

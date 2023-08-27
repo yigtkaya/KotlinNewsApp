@@ -11,6 +11,7 @@ A kotlin News App using https://newsapi.org/ api.
 - Room
 - Clean Architecture
 - Intents
+- Single source of truth
   
 # Screenshots
 <img src="https://github.com/yigtkaya/KotlinNewsApp/assets/68725704/ab3eadf9-5884-4d6a-8b4a-155823d983f6" width=40% height=30%>  <img src="https://github.com/yigtkaya/KotlinNewsApp/assets/68725704/2d851da8-1086-4340-bbf6-07eef4ded4cd" width=40% height=30%>

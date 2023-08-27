@@ -39,12 +39,6 @@ fun LandingView(
         "Sports",
         "Finance"
     )
-    val colors = listOf(
-        paleRed,
-        paleGreen,
-        paleYellow,
-        paleBlue
-    )
 
     Column (
         modifier = Modifier
@@ -66,10 +60,8 @@ fun LandingView(
                 modifier = Modifier.fillMaxSize(),content = {
                 items(state.articles.size) { index ->
                     val article = state.articles[index]
-                    val randomColor = colors.random()
                     ArticleCard(
                         article = article,
-                        backgroundColor = randomColor,
                            onClick = {
                                  val articleString = Gson().toJson(article)
                                onNavigateToDetail(articleString)

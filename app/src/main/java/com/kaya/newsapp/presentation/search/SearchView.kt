@@ -43,12 +43,7 @@ fun SearchView (
 ) {
 
     val state = viewModel.state
-    val colors = listOf(
-        paleRed,
-        paleGreen,
-        paleYellow,
-        paleBlue
-    )
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -82,12 +77,10 @@ fun SearchView (
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
             content = {
-                val randomColor = colors.random()
                 items(state.articles.size) { index ->
                 val article = state.articles[index]
                 ArticleCard(
                     article = article,
-                    backgroundColor = colors[index % state.articles.size],
                     onClick = {
                         val articleString = Gson().toJson(article)
                         onNavigateToDetail(articleString)

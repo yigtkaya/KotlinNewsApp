@@ -25,17 +25,27 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaya.newsapp.domain.models.Article
+import com.kaya.newsapp.presentation.theme.paleBlue
+import com.kaya.newsapp.presentation.theme.paleGreen
+import com.kaya.newsapp.presentation.theme.paleRed
+import com.kaya.newsapp.presentation.theme.paleYellow
 
 @Composable
 fun ArticleCard(
     article: Article,
-    backgroundColor: Color,
     onClick: () -> Unit
 ) {
 
+    val color = listOf(
+        paleBlue,
+        paleYellow,
+        paleGreen,
+        paleRed
+    ).random()
+
         Box(modifier = Modifier
             .clip(RoundedCornerShape(24.dp))
-            .background(color = backgroundColor)
+            .background(color = color)
             .fillMaxSize()
             .padding(vertical = 16.dp)
             .clickable {

@@ -4,7 +4,7 @@ A kotlin News App using https://newsapi.org/ api.
 
 # Components used in the app.
 
-- Compose
+- Jetpack Compose
 - Dagger
 - Retrofit
 - Glide

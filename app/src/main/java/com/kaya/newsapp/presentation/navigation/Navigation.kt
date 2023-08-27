@@ -62,7 +62,7 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavController) {
             route = Graph.DETAIL,
             startDestination = DetailScreens.ArticleDetail.route
         ) {
-            composable(DetailScreens.ArticleDetail.route,) {
+            composable(DetailScreens.ArticleDetail.route) {
                 ArticleDetailView(
                     onClick = {
                         navController.popBackStack()

@@ -26,7 +26,7 @@ import com.kaya.newsapp.presentation.theme.paleYellow
 
 @Composable
 fun LandingView(
-    onNavigateToDetail: (String) -> Unit,
+    onNavigateToDetail: () -> Unit,
     viewModel: ArticlesViewModel = hiltViewModel(),
 ) {
 
@@ -63,8 +63,7 @@ fun LandingView(
                     ArticleCard(
                         article = article,
                            onClick = {
-                                 val articleString = Gson().toJson(article)
-                               onNavigateToDetail(articleString)
+                               onNavigateToDetail()
                            }
                     )
                 }

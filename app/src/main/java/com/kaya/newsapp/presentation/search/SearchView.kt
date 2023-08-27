@@ -38,7 +38,7 @@ import com.kaya.newsapp.presentation.theme.paleYellow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView (
-    onNavigateToDetail: (String) -> Unit,
+    onNavigateToDetail: () -> Unit,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
 
@@ -82,8 +82,8 @@ fun SearchView (
                 ArticleCard(
                     article = article,
                     onClick = {
-                        val articleString = Gson().toJson(article)
-                        onNavigateToDetail(articleString)
+                        viewModel.onEvent(SearchEvent.onClick(article))
+                        onNavigateToDetail()
                     }
                 )
             }

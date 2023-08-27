@@ -36,12 +36,12 @@ fun ArticleCard(
     onClick: () -> Unit
 ) {
 
-    val color = listOf(
-        paleBlue,
-        paleYellow,
-        paleGreen,
-        paleRed
-    ).random()
+        val color = listOf(
+            paleBlue,
+            paleYellow,
+            paleGreen,
+            paleRed
+        ).random()
 
         Box(modifier = Modifier
             .clip(RoundedCornerShape(24.dp))

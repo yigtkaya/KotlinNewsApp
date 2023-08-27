@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaya.newsapp.data.repository.NewsRepositoryImpl
+import com.kaya.newsapp.presentation.landing.SelectedArticle
 import com.kaya.newsapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -19,6 +20,8 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     var state by mutableStateOf(SearchState())
+
+    var selectedState by mutableStateOf(SelectedArticle())
     private var searchJob: Job? = null
 
     init {
@@ -39,6 +42,9 @@ class SearchViewModel @Inject constructor(
                         getAll()
                     }
                 }
+            }
+            is SearchEvent.onClick -> {
+                selectedState = selectedState.copy(article = event.article)
             }
         }
     }

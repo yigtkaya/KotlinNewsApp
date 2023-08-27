@@ -1,6 +1,7 @@
 # KotlinNewsApp
 
-A kotlin News App using https://newsapi.org/ api.the design was inspired by this link https://dribbble.com/shots/20391043-News-App.
+A kotlin News App using https://newsapi.org/ api.
+The design was inspired by this link https://dribbble.com/shots/20391043-News-App.
 
 # Components used in the app.
 

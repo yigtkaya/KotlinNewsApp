@@ -3,8 +3,6 @@ package com.kaya.newsapp.presentation.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -15,13 +13,10 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.kaya.newsapp.presentation.ArticleDetail.ArticleDetailView
-import com.kaya.newsapp.presentation.landing.ArticlesViewModel
 import com.kaya.newsapp.presentation.landing.LandingView
 import com.kaya.newsapp.presentation.search.SearchView
 
